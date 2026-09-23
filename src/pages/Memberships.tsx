@@ -140,15 +140,24 @@ function Memberships() {
               }
               className="grid w-full grid-cols-6 items-center border-t border-slate-100 px-6 py-5 text-left transition hover:bg-slate-50/70"
             >
-              <div>
-                <p className="font-semibold text-slate-900">
-                  {family.family}
-                </p>
+             <div>
+  <p className="font-semibold text-slate-900">
+    {family.family}
+  </p>
 
-                <p className="mt-1 text-xs text-slate-400">
-                  {family.child}
-                </p>
-              </div>
+  <p className="mt-1 text-xs text-slate-400">
+    {family.children
+      .map((child) => child.name)
+      .join(', ')}
+  </p>
+
+           <p className="mt-1 text-xs text-slate-400">
+          {family.children.length}{' '}
+         {family.children.length === 1
+      ? 'niño asociado'
+      : 'niños asociados'}
+          </p>
+        </div>
 
               <div>
                 <p className="text-sm font-medium text-slate-700">

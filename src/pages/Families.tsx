@@ -11,16 +11,22 @@ import { useFamiliesContext } from '../hooks/useFamiliesContext'
 
 function Families() {
   const navigate = useNavigate()
+
   const { families } = useFamiliesContext()
+
   const [search, setSearch] = useState('')
 
   const filteredFamilies = families.filter((family) => {
     const term = search.toLowerCase().trim()
 
+    const matchesChild = family.children.some((child) =>
+      child.name.toLowerCase().includes(term)
+    )
+
     return (
       family.family.toLowerCase().includes(term) ||
       family.parent.toLowerCase().includes(term) ||
-      family.child.toLowerCase().includes(term) ||
+      matchesChild ||
       family.phone.toLowerCase().includes(term)
     )
   })
@@ -88,7 +94,7 @@ function Families() {
         <div className="grid grid-cols-6 bg-slate-50/70 px-6 py-3 text-xs font-semibold uppercase tracking-wide text-slate-400">
           <span>Familia</span>
           <span>Acudiente</span>
-          <span>Niño</span>
+          <span>Niños</span>
           <span>Plan</span>
           <span>Disponibles</span>
           <span></span>
@@ -121,9 +127,20 @@ function Families() {
                   {family.parent}
                 </p>
 
-                <p className="text-sm text-slate-600">
-                  {family.child}
-                </p>
+                <div>
+                  <p className="text-sm font-medium text-slate-700">
+                    {family.children
+                      .map((child) => child.name)
+                      .join(', ')}
+                  </p>
+
+                  <p className="mt-1 text-xs text-slate-400">
+                    {family.children.length}{' '}
+                    {family.children.length === 1
+                      ? 'niño registrado'
+                      : 'niños registrados'}
+                  </p>
+                </div>
 
                 <p className="text-sm text-slate-600">
                   {family.plan}
@@ -160,7 +177,7 @@ function Families() {
             </p>
 
             <p className="mt-1 text-sm text-slate-500">
-              Intenta con otro nombre, acudiente o teléfono.
+              Intenta con otro nombre, acudiente, niño o teléfono.
             </p>
           </div>
         )}

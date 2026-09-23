@@ -8,17 +8,14 @@ import {
 import { useFamiliesContext } from '../hooks/useFamiliesContext'
 
 function Visits() {
-  const { families, visits } = useFamiliesContext()
+  const {  visits } = useFamiliesContext()
 
 
-  const familiesWithVisits = families.filter(
-    (family) => family.used > 0
-  ).length
+  const familiesWithVisits = new Set(
+  visits.map((visit) => visit.familyId)
+).size
 
-  const totalUsed = families.reduce(
-    (total, family) => total + family.used,
-    0
-  )
+const totalUsed = visits.length
 
   return (
     <div className="p-8">

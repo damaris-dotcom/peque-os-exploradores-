@@ -7,13 +7,20 @@ import {
   TicketCheck,
 } from 'lucide-react'
 
-import { useNavigate, useParams } from 'react-router-dom'
+import {
+  useNavigate,
+  useParams,
+} from 'react-router-dom'
+
 import { useFamiliesContext } from '../hooks/useFamiliesContext'
 
 function FamilyProfile() {
   const navigate = useNavigate()
+
   const { id } = useParams()
-  const { families, visits, registerVisit } = useFamiliesContext()
+
+  const { families, visits } =
+    useFamiliesContext()
 
   const family = families.find(
     (item) => item.id === Number(id)
@@ -27,7 +34,9 @@ function FamilyProfile() {
         </h2>
 
         <button
-          onClick={() => navigate('/familias')}
+          onClick={() =>
+            navigate('/familias')
+          }
           className="mt-4 font-semibold text-purple-600"
         >
           Volver a familias
@@ -40,14 +49,17 @@ function FamilyProfile() {
     (family.used / family.total) * 100
   )
 
- const familyVisits = visits.filter(
-  (visit) => visit.familyId === family.id
-)
+  const familyVisits = visits.filter(
+    (visit) =>
+      visit.familyId === family.id
+  )
 
   return (
     <div className="p-8">
       <button
-        onClick={() => navigate('/familias')}
+        onClick={() =>
+          navigate('/familias')
+        }
         className="flex items-center gap-2 text-sm font-semibold text-slate-500 transition hover:text-purple-600"
       >
         <ArrowLeft size={17} />
@@ -65,13 +77,19 @@ function FamilyProfile() {
           </h2>
 
           <p className="mt-2 text-slate-500">
-            Consulta la información de la familia, su membresía y el historial de ingresos.
+            Consulta la información de la
+            familia, su membresía y el
+            historial de ingresos.
           </p>
         </div>
 
         <button
-          onClick={() => registerVisit(family.id)}
-          disabled={family.available === 0}
+          onClick={() =>
+            navigate('/nuevo-ingreso')
+          }
+          disabled={
+            family.available === 0
+          }
           className="flex items-center gap-2 rounded-2xl bg-purple-600 px-5 py-3 font-semibold text-white shadow-sm transition hover:bg-purple-700 disabled:cursor-not-allowed disabled:bg-slate-300"
         >
           <TicketCheck size={18} />
@@ -111,19 +129,48 @@ function FamilyProfile() {
               </div>
             </div>
 
-            <div className="flex items-center gap-4">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-purple-50 text-purple-600">
+            <div className="flex items-start gap-4">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-purple-50 text-purple-600">
                 <Baby size={19} />
               </div>
 
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-                  Niño
+                  Niños asociados
                 </p>
 
-                <p className="mt-1 font-semibold text-slate-800">
-                  {family.child}
-                </p>
+                <div className="mt-2 space-y-2">
+                  {family.children.map(
+                    (child) => {
+                      const childVisits =
+                        familyVisits.filter(
+                          (visit) =>
+                            visit.childId ===
+                            child.id
+                        )
+
+                      return (
+                        <div
+                          key={child.id}
+                        >
+                          <p className="font-semibold text-slate-800">
+                            {child.name}
+                          </p>
+
+                          <p className="text-xs text-slate-400">
+                            {
+                              childVisits.length
+                            }{' '}
+                            {childVisits.length ===
+                            1
+                              ? 'visita registrada'
+                              : 'visitas registradas'}
+                          </p>
+                        </div>
+                      )
+                    }
+                  )}
+                </div>
               </div>
             </div>
 
@@ -145,7 +192,9 @@ function FamilyProfile() {
 
             <div className="flex items-center gap-4">
               <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-green-50 text-green-600">
-                <CheckCircle2 size={19} />
+                <CheckCircle2
+                  size={19}
+                />
               </div>
 
               <div>
@@ -173,7 +222,8 @@ function FamilyProfile() {
               </h3>
 
               <p className="mt-1 text-sm text-slate-500">
-                Estado actual del paquete de ingresos.
+                Estado actual del paquete de
+                ingresos.
               </p>
             </div>
 
@@ -228,12 +278,15 @@ function FamilyProfile() {
             <div className="mt-3 h-3 overflow-hidden rounded-full bg-slate-100">
               <div
                 className="h-full rounded-full bg-purple-600 transition-all duration-300"
-                style={{ width: `${percentage}%` }}
+                style={{
+                  width: `${percentage}%`,
+                }}
               />
             </div>
 
             <p className="mt-3 text-sm text-slate-400">
-              {family.available} ingresos disponibles de {family.total}.
+              {family.available} ingresos
+              disponibles de {family.total}.
             </p>
           </div>
         </div>
@@ -246,7 +299,8 @@ function FamilyProfile() {
           </h3>
 
           <p className="mt-1 text-sm text-slate-500">
-            Ingresos registrados para esta familia.
+            Ingresos individuales registrados
+            para los niños de esta familia.
           </p>
         </div>
 
@@ -257,20 +311,20 @@ function FamilyProfile() {
         </div>
 
         {familyVisits.length > 0 ? (
-  familyVisits.map((visit) => (
+          familyVisits.map((visit) => (
             <div
               key={visit.id}
               className="grid grid-cols-3 items-center border-t border-slate-100 px-6 py-5"
             >
               <div>
-           <p className="text-sm font-medium text-slate-700">
-           {visit.date}
-            </p>
+                <p className="text-sm font-medium text-slate-700">
+                  {visit.date}
+                </p>
 
-          <p className="mt-1 text-xs text-slate-400">
-          {visit.time}
-             </p>
-            </div>
+                <p className="mt-1 text-xs text-slate-400">
+                  {visit.time}
+                </p>
+              </div>
 
               <p className="font-medium text-slate-800">
                 {visit.child}
@@ -290,7 +344,8 @@ function FamilyProfile() {
             </p>
 
             <p className="mt-1 text-sm text-slate-500">
-              El historial aparecerá aquí cuando se registre un ingreso.
+              El historial aparecerá aquí
+              cuando se registre un ingreso.
             </p>
           </div>
         )}

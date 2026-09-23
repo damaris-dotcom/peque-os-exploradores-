@@ -9,6 +9,7 @@ import type { Visit } from '../data/visitTypes'
 
 import {
   FamiliesContext,
+  type Family,
   type NewFamilyData,
 } from './FamiliesContext'
 
@@ -23,29 +24,37 @@ export function FamiliesProvider({
 }: {
   children: ReactNode
 }) {
-  const [families, setFamilies] = useState(() => {
-    const savedFamilies = localStorage.getItem(
-      FAMILIES_STORAGE_KEY
-    )
+  const [families, setFamilies] =
+    useState<Family[]>(() => {
+      const savedFamilies =
+        localStorage.getItem(
+          FAMILIES_STORAGE_KEY
+        )
 
-    if (savedFamilies) {
-      return JSON.parse(savedFamilies)
-    }
+      if (savedFamilies) {
+        return JSON.parse(
+          savedFamilies
+        ) as Family[]
+      }
 
-    return initialFamilies
-  })
+      return initialFamilies
+    })
 
-  const [visits, setVisits] = useState<Visit[]>(() => {
-    const savedVisits = localStorage.getItem(
-      VISITS_STORAGE_KEY
-    )
+  const [visits, setVisits] =
+    useState<Visit[]>(() => {
+      const savedVisits =
+        localStorage.getItem(
+          VISITS_STORAGE_KEY
+        )
 
-    if (savedVisits) {
-      return JSON.parse(savedVisits)
-    }
+      if (savedVisits) {
+        return JSON.parse(
+          savedVisits
+        ) as Visit[]
+      }
 
-    return []
-  })
+      return []
+    })
 
   useEffect(() => {
     localStorage.setItem(
@@ -61,79 +70,151 @@ export function FamiliesProvider({
     )
   }, [visits])
 
-  const registerVisit = (familyId: number) => {
-    const selectedFamily = families.find(
-      (family) => family.id === familyId
-    )
+  const registerVisit = (
+    familyId: number,
+    childIds: number[]
+  ) => {
+    const selectedFamily =
+      families.find(
+        (family) =>
+          family.id === familyId
+      )
+
+    if (!selectedFamily) {
+      return
+    }
+
+    if (childIds.length === 0) {
+      return
+    }
+
+    const selectedChildren =
+      selectedFamily.children.filter(
+        (child) =>
+          childIds.includes(child.id)
+      )
 
     if (
-      !selectedFamily ||
-      selectedFamily.available <= 0
+      selectedChildren.length === 0
     ) {
       return
     }
 
-    setFamilies((currentFamilies) =>
-      currentFamilies.map((family) => {
-        if (family.id !== familyId) {
-          return family
-        }
+    const visitsCount =
+      selectedChildren.length
 
-        return {
-          ...family,
-          used: family.used + 1,
-          available: family.available - 1,
-        }
-      })
+    if (
+      selectedFamily.available <
+      visitsCount
+    ) {
+      return
+    }
+
+    setFamilies(
+      (currentFamilies) =>
+        currentFamilies.map(
+          (family) => {
+            if (
+              family.id !== familyId
+            ) {
+              return family
+            }
+
+            return {
+              ...family,
+              used:
+                family.used +
+                visitsCount,
+              available:
+                family.available -
+                visitsCount,
+            }
+          }
+        )
     )
 
     const now = new Date()
 
-    const newVisit: Visit = {
-      id: Date.now(),
-      familyId: selectedFamily.id,
-      family: selectedFamily.family,
-      child: selectedFamily.child,
-      date: now.toLocaleDateString('es-CO'),
-      time: now.toLocaleTimeString('es-CO', {
-        hour: '2-digit',
-        minute: '2-digit',
-      }),
-      status: 'Registrado',
-    }
+    const newVisits: Visit[] =
+      selectedChildren.map(
+        (child, index) => ({
+          id:
+            Date.now() +
+            index,
 
-    setVisits((currentVisits) => [
-      newVisit,
-      ...currentVisits,
-    ])
+          familyId:
+            selectedFamily.id,
+
+          family:
+            selectedFamily.family,
+
+          childId:
+            child.id,
+
+          child:
+            child.name,
+
+          date:
+            now.toLocaleDateString(
+              'es-CO'
+            ),
+
+          time:
+            now.toLocaleTimeString(
+              'es-CO',
+              {
+                hour: '2-digit',
+                minute: '2-digit',
+              }
+            ),
+
+          status:
+            'Registrado',
+        })
+      )
+
+    setVisits(
+      (currentVisits) => [
+        ...newVisits,
+        ...currentVisits,
+      ]
+    )
   }
 
-  const addFamily = (data: NewFamilyData) => {
-    setFamilies((currentFamilies) => {
-      const newId =
-        currentFamilies.length > 0
-          ? Math.max(
-              ...currentFamilies.map(
-                (family) => family.id
-              )
-            ) + 1
-          : 1
+  const addFamily = (
+    data: NewFamilyData
+  ) => {
+    setFamilies(
+      (currentFamilies) => {
+        const newId =
+          currentFamilies.length > 0
+            ? Math.max(
+                ...currentFamilies.map(
+                  (family) =>
+                    family.id
+                )
+              ) + 1
+            : 1
 
-      const newFamily = {
-        id: newId,
-        family: data.family,
-        parent: data.parent,
-        child: data.child,
-        phone: data.phone,
-        plan: `${data.total} ingresos`,
-        total: data.total,
-        used: 0,
-        available: data.total,
-        status: 'Activo',
+        const newFamily: Family = {
+          id: newId,
+          family: data.family,
+          parent: data.parent,
+          children: data.children,
+          phone: data.phone,
+          plan: `${data.total} ingresos`,
+          total: data.total,
+          used: 0,
+          available: data.total,
+          status: 'Activo',
+        }
+
+        return [
+          ...currentFamilies,
+          newFamily,
+        ]
       }
-
-      return [...currentFamilies, newFamily]
-    })
+    )
   }
 
   return (

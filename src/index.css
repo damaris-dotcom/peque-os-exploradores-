@@ -1,14 +1,52 @@
 @import "tailwindcss";
 
-body {
-  margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
-  font-family: Inter, system-ui, Arial, sans-serif;
-  background: #f8f7fb;
-  color: #1f1f2e;
+html {
+  width: 100%;
+  min-height: 100%;
+  -webkit-text-size-adjust: 100%;
 }
 
-* {
+body {
+  margin: 0;
+  width: 100%;
+  min-height: 100vh;
+
+  font-family: Inter, system-ui, Arial, sans-serif;
+
+  background: #f8f7fb;
+  color: #1f1f2e;
+
+  overflow-x: hidden;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+*,
+*::before,
+*::after {
   box-sizing: border-box;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
 }

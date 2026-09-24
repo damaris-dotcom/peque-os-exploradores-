@@ -138,58 +138,82 @@ function NewVisit() {
   }
 
   return (
-    <div className="p-8">
+    <div className="w-full p-4 sm:p-6 lg:p-8">
+      {/* Encabezado */}
       <div>
         <p className="text-sm font-semibold text-purple-600">
           Operación
         </p>
 
-        <h2 className="mt-1 text-3xl font-bold tracking-tight text-slate-900">
+        <h2 className="mt-1 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
           Registrar ingreso
         </h2>
 
-        <p className="mt-2 text-slate-500">
-          Busca una familia, selecciona los
-          niños que ingresan y registra la
-          visita.
+        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-500 sm:text-base">
+          Busca una familia, selecciona los niños que ingresan y registra la visita.
         </p>
       </div>
 
+      {/* Mensaje de éxito */}
       {successMessage && (
-        <div className="mt-6 flex items-center gap-3 rounded-2xl border border-green-200 bg-green-50 px-5 py-4 text-green-800">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-green-100">
+        <div
+          className="
+            mt-5 flex items-start gap-3
+            rounded-2xl
+            border border-green-200
+            bg-green-50
+            p-4
+            text-green-800
+            sm:mt-6 sm:px-5
+          "
+        >
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-green-100">
             ✓
           </div>
 
-          <div>
+          <div className="min-w-0">
             <p className="font-semibold">
               Ingreso registrado
             </p>
 
-            <p className="text-sm text-green-700">
+            <p className="mt-1 break-words text-sm leading-relaxed text-green-700">
               {successMessage}
             </p>
           </div>
         </div>
       )}
 
-      <div className="mt-8 grid grid-cols-1 gap-6 xl:grid-cols-2">
-        <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+      {/* Contenido principal */}
+      <div className="mt-6 grid grid-cols-1 gap-5 sm:mt-8 sm:gap-6 xl:grid-cols-2">
+        {/* Buscar familia */}
+        <div className="min-w-0 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:rounded-3xl sm:p-6">
           <div>
-            <h3 className="text-lg font-bold text-slate-900">
+            <h3 className="text-base font-bold text-slate-900 sm:text-lg">
               Buscar familia
             </h3>
 
-            <p className="mt-1 text-sm text-slate-500">
-              Busca por familia, acudiente,
-              niño o teléfono.
+            <p className="mt-1 text-sm leading-relaxed text-slate-500">
+              Busca por familia, acudiente, niño o teléfono.
             </p>
           </div>
 
-          <div className="mt-5 flex items-center gap-3 rounded-2xl border border-slate-200 px-4 py-3 transition focus-within:border-purple-400">
+          {/* Buscador */}
+          <div
+            className="
+              mt-5 flex items-center gap-3
+              rounded-2xl
+              border border-slate-200
+              px-3 py-3
+              transition
+              focus-within:border-purple-400
+              focus-within:ring-2
+              focus-within:ring-purple-100
+              sm:px-4
+            "
+          >
             <Search
               size={18}
-              className="text-slate-400"
+              className="shrink-0 text-slate-400"
             />
 
             <input
@@ -199,10 +223,17 @@ function NewVisit() {
                 setSearch(event.target.value)
               }
               placeholder="Ej. Mateo, Ramírez o 300..."
-              className="w-full bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-400"
+              className="
+                min-w-0 w-full
+                bg-transparent
+                text-base text-slate-900
+                outline-none
+                placeholder:text-slate-400
+              "
             />
           </div>
 
+          {/* Resultados */}
           <div className="mt-5 space-y-3">
             {filteredFamilies.length > 0 ? (
               filteredFamilies.map(
@@ -222,76 +253,85 @@ function NewVisit() {
                           family.id
                         )
                       }
-                      className={`flex w-full items-center justify-between rounded-2xl border p-4 text-left transition ${
-                        selected
-                          ? 'border-purple-300 bg-purple-50'
-                          : 'border-slate-200 hover:border-purple-200 hover:bg-slate-50'
-                      }`}
+                      className={`
+                        w-full
+                        rounded-2xl border
+                        p-4 text-left
+                        transition
+                        ${
+                          selected
+                            ? 'border-purple-300 bg-purple-50'
+                            : 'border-slate-200 hover:border-purple-200 hover:bg-slate-50'
+                        }
+                      `}
                     >
-                      <div>
-                        <p className="font-semibold text-slate-900">
-                          {family.family}
-                        </p>
-
-                        <p className="mt-1 text-sm text-slate-500">
-                          {family.children
-                            .map(
-                              (child) =>
-                                child.name
-                            )
-                            .join(', ')}
-                        </p>
-
-                        <p className="mt-1 text-xs text-slate-400">
-                          {
-                            family.children
-                              .length
-                          }{' '}
-                          {family.children
-                            .length === 1
-                            ? 'niño registrado'
-                            : 'niños registrados'}
-                        </p>
-
-                        <p className="mt-1 text-xs text-slate-400">
-                          {family.phone}
-                        </p>
-                      </div>
-
-                      <div className="flex items-center gap-4">
-                        <div className="text-right">
-                          <p className="text-xs font-medium text-slate-400">
-                            Disponibles
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate font-semibold text-slate-900">
+                            {family.family}
                           </p>
 
-                          <p
-                            className={`mt-1 text-xl font-bold ${
-                              lowBalance
-                                ? 'text-orange-600'
-                                : 'text-green-700'
-                            }`}
-                          >
+                          <p className="mt-1 line-clamp-2 text-sm text-slate-500">
+                            {family.children
+                              .map(
+                                (child) =>
+                                  child.name
+                              )
+                              .join(', ')}
+                          </p>
+
+                          <p className="mt-1 text-xs text-slate-400">
                             {
-                              family.available
-                            }
+                              family.children
+                                .length
+                            }{' '}
+                            {family.children
+                              .length === 1
+                              ? 'niño registrado'
+                              : 'niños registrados'}
+                          </p>
+
+                          <p className="mt-1 text-xs text-slate-400">
+                            {family.phone}
                           </p>
                         </div>
 
-                        <ChevronRight
-                          size={18}
-                          className={
-                            selected
-                              ? 'text-purple-600'
-                              : 'text-slate-300'
-                          }
-                        />
+                        <div className="flex shrink-0 items-center gap-2 sm:gap-4">
+                          <div className="text-right">
+                            <p className="text-[11px] font-medium text-slate-400 sm:text-xs">
+                              Disponibles
+                            </p>
+
+                            <p
+                              className={`
+                                mt-1 text-xl font-bold
+                                ${
+                                  lowBalance
+                                    ? 'text-orange-600'
+                                    : 'text-green-700'
+                                }
+                              `}
+                            >
+                              {family.available}
+                            </p>
+                          </div>
+
+                          <ChevronRight
+                            size={18}
+                            className={
+                              selected
+                                ? 'text-purple-600'
+                                : 'text-slate-300'
+                            }
+                          />
+                        </div>
                       </div>
                     </button>
                   )
                 }
               )
             ) : (
-              <div className="rounded-2xl bg-slate-50 px-5 py-12 text-center">
+              <div className="rounded-2xl bg-slate-50 px-4 py-10 text-center sm:px-5 sm:py-12">
                 <Search
                   size={22}
                   className="mx-auto text-slate-300"
@@ -302,24 +342,25 @@ function NewVisit() {
                 </p>
 
                 <p className="mt-1 text-sm text-slate-500">
-                  Intenta con otro criterio de
-                  búsqueda.
+                  Intenta con otro criterio de búsqueda.
                 </p>
               </div>
             )}
           </div>
         </div>
 
-        <div>
+        {/* Familia seleccionada */}
+        <div className="min-w-0">
           {selectedFamily ? (
-            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-              <div className="flex items-start justify-between">
-                <div>
+            <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:rounded-3xl sm:p-6">
+              {/* Encabezado familia */}
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <div className="min-w-0">
                   <p className="text-sm font-semibold text-purple-600">
                     Familia seleccionada
                   </p>
 
-                  <h3 className="mt-1 text-2xl font-bold text-slate-900">
+                  <h3 className="mt-1 break-words text-xl font-bold text-slate-900 sm:text-2xl">
                     {selectedFamily.family}
                   </h3>
 
@@ -335,59 +376,58 @@ function NewVisit() {
                   </p>
                 </div>
 
-                <span className="rounded-full bg-green-50 px-3 py-1 text-sm font-semibold text-green-700">
+                <span className="self-start rounded-full bg-green-50 px-3 py-1 text-sm font-semibold text-green-700">
                   {selectedFamily.status}
                 </span>
               </div>
 
-              <div className="mt-7 grid grid-cols-3 gap-4">
-                <div className="rounded-2xl bg-slate-50 p-5">
+              {/* Métricas */}
+              <div className="mt-6 grid grid-cols-1 gap-3 sm:mt-7 sm:grid-cols-3 sm:gap-4">
+                <div className="rounded-2xl bg-slate-50 p-4 sm:p-5">
                   <p className="text-sm font-medium text-slate-500">
                     Total
                   </p>
 
-                  <p className="mt-2 text-3xl font-bold text-slate-900">
+                  <p className="mt-2 text-2xl font-bold text-slate-900 sm:text-3xl">
                     {selectedFamily.total}
                   </p>
                 </div>
 
-                <div className="rounded-2xl bg-orange-50 p-5">
+                <div className="rounded-2xl bg-orange-50 p-4 sm:p-5">
                   <p className="text-sm font-medium text-orange-700">
                     Utilizados
                   </p>
 
-                  <p className="mt-2 text-3xl font-bold text-orange-700">
+                  <p className="mt-2 text-2xl font-bold text-orange-700 sm:text-3xl">
                     {selectedFamily.used}
                   </p>
                 </div>
 
-                <div className="rounded-2xl bg-green-50 p-5">
+                <div className="rounded-2xl bg-green-50 p-4 sm:p-5">
                   <p className="text-sm font-medium text-green-700">
                     Disponibles
                   </p>
 
-                  <p className="mt-2 text-3xl font-bold text-green-700">
-                    {
-                      selectedFamily.available
-                    }
+                  <p className="mt-2 text-2xl font-bold text-green-700 sm:text-3xl">
+                    {selectedFamily.available}
                   </p>
                 </div>
               </div>
 
-              <div className="mt-6 rounded-2xl border border-slate-200 p-5">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-50 text-purple-600">
+              {/* Selección de niños */}
+              <div className="mt-5 rounded-2xl border border-slate-200 p-4 sm:mt-6 sm:p-5">
+                <div className="flex items-start gap-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-purple-50 text-purple-600">
                     <Users size={18} />
                   </div>
 
-                  <div>
+                  <div className="min-w-0">
                     <p className="font-semibold text-slate-900">
                       ¿Quiénes ingresan?
                     </p>
 
-                    <p className="mt-1 text-sm text-slate-500">
-                      Selecciona uno o varios
-                      niños.
+                    <p className="mt-1 text-sm leading-relaxed text-slate-500">
+                      Selecciona uno o varios niños.
                     </p>
                   </div>
                 </div>
@@ -417,30 +457,41 @@ function NewVisit() {
                               child.id
                             )
                           }
-                          className={`flex w-full items-center justify-between rounded-2xl border px-4 py-4 text-left transition ${
-                            checked
-                              ? 'border-purple-300 bg-purple-50'
-                              : limitReached
-                                ? 'cursor-not-allowed border-slate-100 bg-slate-50 opacity-50'
-                                : 'border-slate-200 hover:border-purple-200 hover:bg-slate-50'
-                          }`}
+                          className={`
+                            flex min-h-14
+                            w-full items-center
+                            justify-between gap-3
+                            rounded-2xl border
+                            px-4 py-3
+                            text-left
+                            transition
+                            ${
+                              checked
+                                ? 'border-purple-300 bg-purple-50'
+                                : limitReached
+                                  ? 'cursor-not-allowed border-slate-100 bg-slate-50 opacity-50'
+                                  : 'border-slate-200 hover:border-purple-200 hover:bg-slate-50'
+                            }
+                          `}
                         >
-                          <div>
-                            <p className="font-semibold text-slate-800">
-                              {child.name}
-                            </p>
-                          </div>
+                          <p className="min-w-0 break-words font-semibold text-slate-800">
+                            {child.name}
+                          </p>
 
                           <div
-                            className={`flex h-7 w-7 items-center justify-center rounded-lg border ${
-                              checked
-                                ? 'border-purple-600 bg-purple-600 text-white'
-                                : 'border-slate-300 bg-white text-transparent'
-                            }`}
+                            className={`
+                              flex h-7 w-7
+                              shrink-0 items-center
+                              justify-center
+                              rounded-lg border
+                              ${
+                                checked
+                                  ? 'border-purple-600 bg-purple-600 text-white'
+                                  : 'border-slate-300 bg-white text-transparent'
+                              }
+                            `}
                           >
-                            <Check
-                              size={16}
-                            />
+                            <Check size={16} />
                           </div>
                         </button>
                       )
@@ -451,7 +502,7 @@ function NewVisit() {
                 {selectedChildren.length >
                   0 && (
                   <div className="mt-4 rounded-xl bg-purple-50 px-4 py-3">
-                    <p className="text-sm font-medium text-purple-700">
+                    <p className="text-sm font-medium leading-relaxed text-purple-700">
                       {
                         selectedChildren.length
                       }{' '}
@@ -465,46 +516,42 @@ function NewVisit() {
                 )}
               </div>
 
-              <div className="mt-6 space-y-4 rounded-2xl border border-slate-200 p-5">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-50 text-purple-600">
-                    <UserRound
-                      size={18}
-                    />
+              {/* Datos acudiente */}
+              <div className="mt-5 space-y-4 rounded-2xl border border-slate-200 p-4 sm:mt-6 sm:p-5">
+                <div className="flex min-w-0 items-center gap-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-purple-50 text-purple-600">
+                    <UserRound size={18} />
                   </div>
 
-                  <div>
+                  <div className="min-w-0">
                     <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
                       Acudiente
                     </p>
 
-                    <p className="mt-1 font-medium text-slate-800">
-                      {
-                        selectedFamily.parent
-                      }
+                    <p className="mt-1 break-words font-medium text-slate-800">
+                      {selectedFamily.parent}
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-50 text-purple-600">
+                <div className="flex min-w-0 items-center gap-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-purple-50 text-purple-600">
                     <Phone size={18} />
                   </div>
 
-                  <div>
+                  <div className="min-w-0">
                     <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
                       Teléfono
                     </p>
 
-                    <p className="mt-1 font-medium text-slate-800">
-                      {
-                        selectedFamily.phone
-                      }
+                    <p className="mt-1 break-words font-medium text-slate-800">
+                      {selectedFamily.phone}
                     </p>
                   </div>
                 </div>
               </div>
 
+              {/* Confirmar */}
               <button
                 type="button"
                 onClick={
@@ -515,22 +562,42 @@ function NewVisit() {
                     0 ||
                   selectedChildren.length === 0
                 }
-                className="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-purple-600 px-5 py-3 font-semibold text-white shadow-sm transition hover:bg-purple-700 disabled:cursor-not-allowed disabled:bg-slate-300"
+                className="
+                  mt-5 flex min-h-12
+                  w-full items-center
+                  justify-center gap-2
+                  rounded-2xl
+                  bg-purple-600
+                  px-4 py-3
+                  text-center
+                  font-semibold text-white
+                  shadow-sm
+                  transition
+                  hover:bg-purple-700
+                  disabled:cursor-not-allowed
+                  disabled:bg-slate-300
+                  sm:mt-6 sm:px-5
+                "
               >
-                <TicketCheck size={18} />
+                <TicketCheck
+                  size={18}
+                  className="shrink-0"
+                />
 
-                {selectedFamily.available ===
-                0
-                  ? 'Sin ingresos disponibles'
-                  : selectedChildren.length ===
-                      0
-                    ? 'Selecciona al menos un niño'
-                    : `Confirmar ${selectedChildren.length} ${
-                        selectedChildren.length ===
-                        1
-                          ? 'ingreso'
-                          : 'ingresos'
-                      }`}
+                <span>
+                  {selectedFamily.available ===
+                  0
+                    ? 'Sin ingresos disponibles'
+                    : selectedChildren.length ===
+                        0
+                      ? 'Selecciona al menos un niño'
+                      : `Confirmar ${selectedChildren.length} ${
+                          selectedChildren.length ===
+                          1
+                            ? 'ingreso'
+                            : 'ingresos'
+                        }`}
+                </span>
               </button>
 
               <button
@@ -540,18 +607,38 @@ function NewVisit() {
                     `/familias/${selectedFamily.id}`
                   )
                 }
-                className="mt-3 w-full rounded-2xl border border-slate-200 px-5 py-3 font-semibold text-slate-700 transition hover:bg-slate-50"
+                className="
+                  mt-3 min-h-12 w-full
+                  rounded-2xl
+                  border border-slate-200
+                  px-5 py-3
+                  font-semibold text-slate-700
+                  transition
+                  hover:bg-slate-50
+                "
               >
                 Ver perfil completo
               </button>
             </div>
           ) : (
-            <div className="flex min-h-[470px] items-center justify-center rounded-3xl border border-dashed border-slate-300 bg-white p-8">
+            <div
+              className="
+                flex min-h-[280px]
+                items-center justify-center
+                rounded-2xl
+                border border-dashed
+                border-slate-300
+                bg-white
+                p-6
+                sm:min-h-[360px]
+                sm:rounded-3xl
+                sm:p-8
+                xl:min-h-[470px]
+              "
+            >
               <div className="max-w-sm text-center">
                 <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-purple-50 text-purple-600">
-                  <TicketCheck
-                    size={24}
-                  />
+                  <TicketCheck size={24} />
                 </div>
 
                 <h3 className="mt-4 text-lg font-bold text-slate-900">
@@ -559,10 +646,7 @@ function NewVisit() {
                 </h3>
 
                 <p className="mt-2 text-sm leading-relaxed text-slate-500">
-                  Aquí podrás verificar la
-                  membresía, seleccionar los
-                  niños que ingresan y validar
-                  el saldo disponible.
+                  Aquí podrás verificar la membresía, seleccionar los niños que ingresan y validar el saldo disponible.
                 </p>
               </div>
             </div>

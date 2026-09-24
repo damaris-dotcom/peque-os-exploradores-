@@ -6,7 +6,6 @@ import {
 
 import Sidebar from './components/Sidebar'
 import Header from './components/Header'
-
 import Dashboard from './pages/Dashboard'
 import Families from './pages/Families'
 import FamilyProfile from './pages/FamilyProfile'
@@ -14,57 +13,66 @@ import NewFamily from './pages/NewFamily'
 import Memberships from './pages/Memberships'
 import Visits from './pages/Visits'
 import NewVisit from './pages/NewVisit'
-
 import { FamiliesProvider } from './context/FamiliesProvider'
 
 function App() {
   return (
     <FamiliesProvider>
       <BrowserRouter>
-        <div className="min-h-screen bg-[#f8f7fb]">
+
+        <div className="min-h-screen bg-[#f8f7fb] overflow-x-hidden">
+
           <Sidebar />
 
-          <div className="ml-64">
+          <div className="min-w-0 lg:ml-64">
+
             <Header />
 
-            <Routes>
-              <Route
-                path="/"
-                element={<Dashboard />}
-              />
+            <main className="w-full">
+              <Routes>
 
-              <Route
-                path="/familias"
-                element={<Families />}
-              />
+                <Route
+                  path="/"
+                  element={<Dashboard />}
+                />
 
-              <Route
-                path="/familias/nueva"
-                element={<NewFamily />}
-              />
+                <Route
+                  path="/familias"
+                  element={<Families />}
+                />
 
-              <Route
-                path="/familias/:id"
-                element={<FamilyProfile />}
-              />
+                <Route
+                  path="/familias/nueva"
+                  element={<NewFamily />}
+                />
 
-              <Route
-                path="/membresias"
-                element={<Memberships />}
-              />
+                <Route
+                  path="/familias/:id"
+                  element={<FamilyProfile />}
+                />
 
-              <Route
-                path="/visitas"
-                element={<Visits />}
-              />
+                <Route
+                  path="/membresias"
+                  element={<Memberships />}
+                />
 
-              <Route
-                path="/nuevo-ingreso"
-                element={<NewVisit />}
-              />
-            </Routes>
+                <Route
+                  path="/visitas"
+                  element={<Visits />}
+                />
+
+                <Route
+                  path="/nuevo-ingreso"
+                  element={<NewVisit />}
+                />
+
+              </Routes>
+            </main>
+
           </div>
+
         </div>
+
       </BrowserRouter>
     </FamiliesProvider>
   )

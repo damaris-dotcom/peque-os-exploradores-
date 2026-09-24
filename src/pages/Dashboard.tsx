@@ -34,97 +34,109 @@ function Dashboard() {
     .slice(0, 4)
 
   return (
-    <div className="p-8">
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold text-slate-900">
+    <div className="w-full p-4 sm:p-6 lg:p-8">
+      {/* Encabezado */}
+      <div className="mb-6 sm:mb-8">
+        <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">
           Resumen general
         </h2>
 
-        <p className="mt-1 text-sm text-slate-500">
+        <p className="mt-1 max-w-2xl text-sm leading-relaxed text-slate-500">
           Consulta rápidamente el estado de familias, membresías e ingresos.
         </p>
       </div>
 
-      <section className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
-       
+      {/* Estadísticas */}
+      <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 xl:grid-cols-4">
         <StatCard
-  title="Familias registradas"
-  value={String(totalFamilies)}
-  detail="Total de familias en el sistema"
-  icon={Users}
-/>
+          title="Familias registradas"
+          value={String(totalFamilies)}
+          detail="Total de familias en el sistema"
+          icon={Users}
+        />
 
-<StatCard
-  title="Membresías activas"
-  value={String(activeMemberships)}
-  detail="Membresías disponibles"
-  icon={TicketCheck}
-/>
+        <StatCard
+          title="Membresías activas"
+          value={String(activeMemberships)}
+          detail="Membresías disponibles"
+          icon={TicketCheck}
+        />
 
-<StatCard
-  title="Visitas registradas"
-  value={String(totalVisits)}
-  detail="Ingresos utilizados"
-  icon={ClipboardList}
-/>
+        <StatCard
+          title="Visitas registradas"
+          value={String(totalVisits)}
+          detail="Ingresos utilizados"
+          icon={ClipboardList}
+        />
 
-<StatCard
-  title="Ingresos disponibles"
-  value={String(totalAvailable)}
-  detail="Saldo total disponible"
-  icon={Sparkles}
-/>
+        <StatCard
+          title="Ingresos disponibles"
+          value={String(totalAvailable)}
+          detail="Saldo total disponible"
+          icon={Sparkles}
+        />
       </section>
 
-      <section className="mt-8 grid grid-cols-1 gap-6 xl:grid-cols-3">
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm xl:col-span-2">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-lg font-bold text-slate-900">
+      {/* Contenido inferior */}
+      <section className="mt-6 grid grid-cols-1 gap-6 sm:mt-8 xl:grid-cols-3">
+        {/* Familias con actividad */}
+        <div className="min-w-0 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6 xl:col-span-2">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div className="min-w-0">
+              <h3 className="text-base font-bold text-slate-900 sm:text-lg">
                 Familias con actividad
               </h3>
 
-              <p className="mt-1 text-sm text-slate-500">
+              <p className="mt-1 text-sm leading-relaxed text-slate-500">
                 Resumen de membresías utilizadas recientemente.
               </p>
             </div>
 
             <button
+              type="button"
               onClick={() => navigate('/visitas')}
-              className="text-sm font-semibold text-purple-600 hover:text-purple-800"
+              className="self-start whitespace-nowrap text-sm font-semibold text-purple-600 transition hover:text-purple-800"
             >
               Ver visitas
             </button>
           </div>
 
-          <div className="mt-6 space-y-4">
+          <div className="mt-5 space-y-3 sm:mt-6 sm:space-y-4">
             {recentFamilies.length > 0 ? (
               recentFamilies.map((family) => (
                 <button
                   key={family.id}
                   type="button"
-                  onClick={() =>
-                    navigate(`/familias/${family.id}`)
-                  }
-                  className="flex w-full items-center justify-between rounded-xl border border-slate-100 p-4 text-left transition hover:bg-slate-50"
+                  onClick={() => navigate(`/familias/${family.id}`)}
+                  className="
+                    flex w-full flex-col gap-3
+                    rounded-xl border border-slate-100
+                    p-4 text-left
+                    transition hover:bg-slate-50
+                    sm:flex-row sm:items-center sm:justify-between
+                  "
                 >
-                  <div className="flex items-center gap-4">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-purple-50">
+                  {/* Familia */}
+                  <div className="flex min-w-0 items-center gap-3 sm:gap-4">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-purple-50">
                       👦
                     </div>
 
-                    <div>
-                      <p className="font-semibold text-slate-900">
-                        {family.children.map((child) => child.name).join(', ')}
+                    <div className="min-w-0">
+                      <p className="truncate font-semibold text-slate-900">
+                        {family.children
+                          .map((child) => child.name)
+                          .join(', ')}
                       </p>
 
-                      <p className="text-sm text-slate-500">
+                      <p className="truncate text-sm text-slate-500">
                         {family.family}
                       </p>
                     </div>
                   </div>
 
-                  <div className="text-right">
+                  {/* Estado */}
+                  <div className="border-t border-slate-100 pt-3 sm:border-0 sm:pt-0 sm:text-right">
                     <p className="text-sm font-semibold text-slate-900">
                       {family.available} disponibles
                     </p>
@@ -136,7 +148,7 @@ function Dashboard() {
                 </button>
               ))
             ) : (
-              <div className="py-10 text-center">
+              <div className="py-8 text-center sm:py-10">
                 <p className="font-semibold text-slate-700">
                   Todavía no hay actividad
                 </p>
@@ -149,40 +161,68 @@ function Dashboard() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h3 className="text-lg font-bold text-slate-900">
+        {/* Acciones rápidas */}
+        <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+          <h3 className="text-base font-bold text-slate-900 sm:text-lg">
             Acciones rápidas
           </h3>
 
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-1 text-sm leading-relaxed text-slate-500">
             Accede a las operaciones más frecuentes.
           </p>
 
-          <div className="mt-6 space-y-3">
+          <div className="mt-5 space-y-3 sm:mt-6">
             <button
+              type="button"
               onClick={() => navigate('/nuevo-ingreso')}
-              className="w-full rounded-xl bg-purple-600 px-4 py-3 font-semibold text-white hover:bg-purple-700"
+              className="
+                min-h-12 w-full rounded-xl
+                bg-purple-600 px-4 py-3
+                font-semibold text-white
+                transition hover:bg-purple-700
+              "
             >
               + Registrar ingreso
             </button>
 
             <button
+              type="button"
               onClick={() => navigate('/familias/nueva')}
-              className="w-full rounded-xl border border-slate-200 px-4 py-3 font-semibold text-slate-700 hover:bg-slate-50"
+              className="
+                min-h-12 w-full rounded-xl
+                border border-slate-200
+                px-4 py-3
+                font-semibold text-slate-700
+                transition hover:bg-slate-50
+              "
             >
               + Nueva familia
             </button>
 
             <button
+              type="button"
               onClick={() => navigate('/familias')}
-              className="w-full rounded-xl border border-slate-200 px-4 py-3 font-semibold text-slate-700 hover:bg-slate-50"
+              className="
+                min-h-12 w-full rounded-xl
+                border border-slate-200
+                px-4 py-3
+                font-semibold text-slate-700
+                transition hover:bg-slate-50
+              "
             >
               Buscar familia
             </button>
 
             <button
+              type="button"
               onClick={() => navigate('/membresias')}
-              className="w-full rounded-xl border border-slate-200 px-4 py-3 font-semibold text-slate-700 hover:bg-slate-50"
+              className="
+                min-h-12 w-full rounded-xl
+                border border-slate-200
+                px-4 py-3
+                font-semibold text-slate-700
+                transition hover:bg-slate-50
+              "
             >
               Ver membresías
             </button>

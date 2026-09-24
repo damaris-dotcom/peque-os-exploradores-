@@ -115,7 +115,7 @@ function Dashboard() {
 
                     <div>
                       <p className="font-semibold text-slate-900">
-                        {family.child}
+                        {family.children.map((child) => child.name).join(', ')}
                       </p>
 
                       <p className="text-sm text-slate-500">
